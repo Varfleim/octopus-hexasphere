@@ -1,0 +1,21 @@
+{
+    "name": "Hexasphere",
+    "rootNamespace": "HS",
+    "references": [
+        "GUID:e59bf9fc7d5a44b18a819a92edd46163",
+        "GUID:f5f01a091e0d746659b4380253d52f4e",
+        "GUID:a758ff47af0484038b71625d05877e22",
+        "GUID:aa3daa4c9113b5247acaf9f2d9948b45",
+        "GUID:70096a8c0b2c4de49b9f3094a3de8df1",
+        "GUID:1dbcccfe85f598846b758d8f67b35464"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

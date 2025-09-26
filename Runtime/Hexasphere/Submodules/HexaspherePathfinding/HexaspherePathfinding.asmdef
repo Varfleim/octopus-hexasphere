@@ -1,0 +1,19 @@
+{
+    "name": "HexaspherePathfinding",
+    "rootNamespace": "HS.Pathfinding",
+    "references": [
+        "GUID:e59bf9fc7d5a44b18a819a92edd46163",
+        "GUID:aa3daa4c9113b5247acaf9f2d9948b45",
+        "GUID:1dbcccfe85f598846b758d8f67b35464",
+        "GUID:6e905975b8614854a968628b78f44584"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
