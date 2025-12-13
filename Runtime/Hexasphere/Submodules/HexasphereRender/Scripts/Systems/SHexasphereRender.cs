@@ -15,10 +15,12 @@ namespace HS.Hexasphere.Render
     {
         readonly EcsWorldInject world = default;
 
-        readonly EcsFilterInject<Inc<C_ProvinceRender, C_ProvinceHexasphere>> pRFilter = default;
         readonly EcsPoolInject<C_ProvinceCore> pCPool = default;
         readonly EcsPoolInject<C_ProvinceRender> pRPool = default;
+        readonly EcsFilterInject<Inc<C_ProvinceRender, C_ProvinceHexasphere>> pHSFilter = default;
+        readonly EcsFilterInject<Inc<C_ProvinceRender, C_ProvinceHexasphere, C_ProvinceHexasphereRender>> pHSRFilter = default;
         readonly EcsPoolInject<C_ProvinceHexasphere> pHSPool = default;
+        readonly EcsPoolInject<C_ProvinceHexasphereRender> pHSRPool = default;
         readonly EcsPoolInject<C_ProvinceMapPanels> pMPPool = default;
 
         readonly EcsPoolInject<C_MapModeCore> mapModeCorePool = default;
@@ -155,6 +157,7 @@ namespace HS.Hexasphere.Render
             } 
         }
 
+        readonly EcsFilterInject<Inc<C_ProvinceHexasphereRender>, Exc<C_ProvinceRender>> pHSRWithoutPRFilter = default;
         void HexasphereInitialization()
         {
             //Удаляем родительский объект чанков, если он не пуст
@@ -168,7 +171,14 @@ namespace HS.Hexasphere.Render
             {
                 Object.DestroyImmediate(hexasphereRenderData.Value.provincesRootGO);
             }
-                 
+
+            //Для каждой провинции с PHSR, но без PR
+            foreach(int provinceEntity in pHSRWithoutPRFilter.Value)
+            {
+                //Удаляем компонент PHSR
+                pHSRPool.Value.Del(provinceEntity);
+            }
+
             //Инициализируем чанки
             ChunksInitialization();
         }
@@ -200,12 +210,16 @@ namespace HS.Hexasphere.Render
             //Создаём счётчик вершин в чанке
             int chunkVerticesCount = 0;
 
-            //Для каждой провинции
-            foreach (int provinceEntity in pRFilter.Value)
+            //Для каждой отображаемой провинции
+            foreach (int provinceEntity in pHSFilter.Value)
             {
                 //Берём компоненты провинции
                 ref C_ProvinceRender pR = ref pRPool.Value.Get(provinceEntity);
                 ref C_ProvinceHexasphere pHS = ref pHSPool.Value.Get(provinceEntity);
+
+                //Назначаем провинции компонент PHSR и заполняем его данные
+                ref C_ProvinceHexasphereRender pHSR = ref pHSRPool.Value.Add(provinceEntity);
+                pHSR = new(0);
 
                 //Если текущий чанк заполнен, сохраняем его данные и создаём новый
                 //Если количество вершин больше максимального количества в чанке
@@ -275,7 +289,7 @@ namespace HS.Hexasphere.Render
                     indicesArray = hexasphereRenderData.Value.pentagonIndicesExtruded;
                 }
 
-                pHS.parentChunkTriangleStart = chunkIndices.Count;
+                pHSR.parentChunkTriangleStart = chunkIndices.Count;
                 //Для каждого индекса провинции
                 for (int a = 0; a < indicesArray.Length; a++)
                 {
@@ -285,9 +299,9 @@ namespace HS.Hexasphere.Render
                 #endregion
 
                 //Определяем положение данных провинции в чанках
-                pHS.parentChunkStart = chunkVerticesCount;
-                pHS.parentChunkIndex = chunkIndex;
-                pHS.parentChunkLength = provinceVerticesCount;
+                pHSR.parentChunkStart = chunkVerticesCount;
+                pHSR.parentChunkIndex = chunkIndex;
+                pHSR.parentChunkLength = provinceVerticesCount;
 
                 //Определяем, какой массив UV использует провинция
                 Vector2[] uVArray;
@@ -402,17 +416,18 @@ namespace HS.Hexasphere.Render
 
         void HexasphereProvincesCreation()
         {
-            //Для каждой провинции
-            foreach(int provinceEntity in pRFilter.Value)
+            //Для каждой отображаемой провинции
+            foreach (int provinceEntity in pHSRFilter.Value)
             {
                 //Берём компоненты провинции
                 ref C_ProvinceRender pR = ref pRPool.Value.Get(provinceEntity);
                 ref C_ProvinceHexasphere pHS = ref pHSPool.Value.Get(provinceEntity);
+                ref C_ProvinceHexasphereRender pHSR = ref pHSRPool.Value.Get(provinceEntity);
 
                 //Берём массивы чанка, в котором располагается провинция
-                ref Vector3[] chunkVertices = ref hexasphereRenderData.Value.chunksVertices[pHS.parentChunkIndex];
-                ref int[] chunkIndices = ref hexasphereRenderData.Value.chunksIndices[pHS.parentChunkIndex];
-                ref Vector4[] chunkUV2 = ref hexasphereRenderData.Value.chunksUV2[pHS.parentChunkIndex];
+                ref Vector3[] chunkVertices = ref hexasphereRenderData.Value.chunksVertices[pHSR.parentChunkIndex];
+                ref int[] chunkIndices = ref hexasphereRenderData.Value.chunksIndices[pHSR.parentChunkIndex];
+                ref Vector4[] chunkUV2 = ref hexasphereRenderData.Value.chunksUV2[pHSR.parentChunkIndex];
 
                 //Определяем количество вершин провинции
                 int provinceVerticesCount = pHS.vertexPoints.Length;
@@ -430,7 +445,7 @@ namespace HS.Hexasphere.Render
                     Vector3 vertex = point.ProjectedVector3;
 
                     //Заносим её в массив вершин
-                    chunkVertices[pHS.parentChunkStart + a] = vertex;
+                    chunkVertices[pHSR.parentChunkStart + a] = vertex;
 
                     //Рассчитываем компоненты UV
                     gpos.x += vertex.x;
@@ -450,9 +465,9 @@ namespace HS.Hexasphere.Render
                 if(pHS.vertexPoints.Length == 6)
                 {
                     //Заносим вершины основания гексагона в массив
-                    chunkVertices[pHS.parentChunkStart + 6]
+                    chunkVertices[pHSR.parentChunkStart + 6]
                         = (pHS.vertexPoints[1].ProjectedVector3 + pHS.vertexPoints[5].ProjectedVector3) * 0.5f;
-                    chunkVertices[pHS.parentChunkStart + 7]
+                    chunkVertices[pHSR.parentChunkStart + 7]
                         = (pHS.vertexPoints[2].ProjectedVector3 + pHS.vertexPoints[4].ProjectedVector3) * 0.5f;
 
                     //Обновляем количество вершин
@@ -465,9 +480,9 @@ namespace HS.Hexasphere.Render
                 else
                 {
                     //Заносим вершины основания пентагона в массив
-                    chunkVertices[pHS.parentChunkStart + 5]
+                    chunkVertices[pHSR.parentChunkStart + 5]
                         = (pHS.vertexPoints[1].ProjectedVector3 + pHS.vertexPoints[4].ProjectedVector3) * 0.5f;
-                    chunkVertices[pHS.parentChunkStart + 6]
+                    chunkVertices[pHSR.parentChunkStart + 6]
                         = (pHS.vertexPoints[2].ProjectedVector3 + pHS.vertexPoints[4].ProjectedVector3) * 0.5f;
 
                     //Обновляем количество вершин
@@ -484,14 +499,14 @@ namespace HS.Hexasphere.Render
                 for (int a = 0; a < provinceVerticesCount; a++)
                 {
                     //Заносим gpos в массив UV-координат
-                    chunkUV2[pHS.parentChunkStart + a] = gpos;
+                    chunkUV2[pHSR.parentChunkStart + a] = gpos;
                 }
 
                 //Для каждого индекса
                 for (int a = 0; a < indicesArray.Length; a++)
                 {
                     //Заносим индекс в массив индексов
-                    chunkIndices[pHS.parentChunkTriangleStart + a] = pHS.parentChunkStart + indicesArray[a];
+                    chunkIndices[pHSR.parentChunkTriangleStart + a] = pHSR.parentChunkStart + indicesArray[a];
                 }
             }
 
@@ -547,16 +562,17 @@ namespace HS.Hexasphere.Render
         void EdgesThinUpdate()
         {
             //Проверяем, какие грани требуется отобразить
-            //Для каждой провинции
-            foreach(int provinceEntity in pRFilter.Value)
+            //Для каждой отображаемой провинции
+            foreach(int provinceEntity in pHSRFilter.Value)
             {
                 //Берём провинцию
                 ref C_ProvinceCore pC = ref pCPool.Value.Get(provinceEntity);
                 ref C_ProvinceRender pR = ref pRPool.Value.Get(provinceEntity);
                 ref C_ProvinceHexasphere pHS = ref pHSPool.Value.Get(provinceEntity);
+                ref C_ProvinceHexasphereRender pHSR = ref pHSRPool.Value.Get(provinceEntity);
 
                 //Обновляем маску граней
-                pHS.thinEdges = 63;
+                pHSR.thinEdges = 63;
 
                 //Для каждой вершины
                 for (int a = 0; a < pHS.vertices.Length; a++)
@@ -587,7 +603,7 @@ namespace HS.Hexasphere.Render
                                 if (p0 == q0 && p1 == q1 || p0 == q1 && p1 == q0)
                                 {
                                     //Обновляем маску граней
-                                    pHS.thinEdges &= 63 - (1 << a);
+                                    pHSR.thinEdges &= 63 - (1 << a);
 
                                     //Выходим из цикла вплоть до вершины
                                     b = 9999;
@@ -612,12 +628,13 @@ namespace HS.Hexasphere.Render
             List<Vector2> chunkUVs = HexasphereRenderData.CheckList<Vector2>(ref hexasphereRenderData.Value.thinEdgesChunkUVs[chunkIndex]);
             List<Color32> chunkColors = HexasphereRenderData.CheckList<Color32>(ref hexasphereRenderData.Value.thinEdgesChunkColors[chunkIndex]);
 
-            //Для каждой провинции
-            foreach (int provinceEntity in pRFilter.Value)
+            //Для каждой отображаемой провинции
+            foreach (int provinceEntity in pHSRFilter.Value)
             {
                 //Берём провинцию
                 ref C_ProvinceRender pR = ref pRPool.Value.Get(provinceEntity);
                 ref C_ProvinceHexasphere pHS = ref pHSPool.Value.Get(provinceEntity);
+                ref C_ProvinceHexasphereRender pHSR = ref pHSRPool.Value.Get(provinceEntity);
 
                 //Если число вершин больше максимального в списке
                 if(verticesCount > HexasphereRenderData.maxVertexArraySize)
@@ -639,9 +656,9 @@ namespace HS.Hexasphere.Render
                 Vector2 uVExtruded = new(provinceCount, pR.ProvinceHeight);
 
                 //Определяем положение данных провинции в чанках
-                pHS.parentThinEdgesChunkIndex = chunkIndex;
-                pHS.parentThinEdgesChunkStart = verticesCount;
-                pHS.parentThinEdgesChunkLength = 0;
+                pHSR.parentThinEdgesChunkIndex = chunkIndex;
+                pHSR.parentThinEdgesChunkStart = verticesCount;
+                pHSR.parentThinEdgesChunkLength = 0;
 
                 //Определяем цвет провинции
                 Color32 provinceColor = Color.white;
@@ -657,7 +674,7 @@ namespace HS.Hexasphere.Render
                 for(int a = 0; a < pHS.vertexPoints.Length; a++)
                 {
                     //Определяем, видима ли грань
-                    bool segmentVisible = (pHS.thinEdges & (1 << a)) != 0;
+                    bool segmentVisible = (pHSR.thinEdges & (1 << a)) != 0;
 
                     //Если грань видима или вершина необходима
                     if (segmentVisible || vertexRequired)
@@ -692,7 +709,7 @@ namespace HS.Hexasphere.Render
                         verticesCount++;
 
                         //Увеличиваем длину данных провинции в чанке
-                        pHS.parentThinEdgesChunkLength++;
+                        pHSR.parentThinEdgesChunkLength++;
                     }
 
                     //Заменяем необходимость вершины на видимость грани
@@ -783,16 +800,17 @@ namespace HS.Hexasphere.Render
         void EdgesThickUpdate()
         {
             //Проверяем, какие грани требуется отобразить
-            //Для каждой провинции
-            foreach (int provinceEntity in pRFilter.Value)
+            //Для каждой отображаемой провинции
+            foreach (int provinceEntity in pHSRFilter.Value)
             {
                 //Берём провинцию
                 ref C_ProvinceCore pC = ref pCPool.Value.Get(provinceEntity);
                 ref C_ProvinceRender pR = ref pRPool.Value.Get(provinceEntity);
                 ref C_ProvinceHexasphere pHS = ref pHSPool.Value.Get(provinceEntity);
+                ref C_ProvinceHexasphereRender pHSR = ref pHSRPool.Value.Get(provinceEntity);
 
                 //Обновляем маску граней
-                pHS.thickEdges = 63;
+                pHSR.thickEdges = 63;
 
                 //Для каждой вершины
                 for (int a = 0; a < pHS.vertices.Length; a++)
@@ -823,7 +841,7 @@ namespace HS.Hexasphere.Render
                                 if (p0 == q0 && p1 == q1 || p0 == q1 && p1 == q0)
                                 {
                                     //Обновляем маску граней
-                                    pHS.thickEdges &= 63 - (1 << a);
+                                    pHSR.thickEdges &= 63 - (1 << a);
 
                                     //Выходим из цикла вплоть до вершины
                                     b = 9999;
@@ -848,12 +866,13 @@ namespace HS.Hexasphere.Render
             List<Vector2> chunkUVs = HexasphereRenderData.CheckList<Vector2>(ref hexasphereRenderData.Value.thickEdgesChunkUVs[chunkIndex]);
             List<Color32> chunkColors = HexasphereRenderData.CheckList<Color32>(ref hexasphereRenderData.Value.thickEdgesChunkColors[chunkIndex]);
 
-            //Для каждой провинции
-            foreach (int provinceEntity in pRFilter.Value)
+            //Для каждой отображаемой провинции
+            foreach (int provinceEntity in pHSRFilter.Value)
             {
                 //Берём провинцию
                 ref C_ProvinceRender pR = ref pRPool.Value.Get(provinceEntity);
                 ref C_ProvinceHexasphere pHS = ref pHSPool.Value.Get(provinceEntity);
+                ref C_ProvinceHexasphereRender pHSR = ref pHSRPool.Value.Get(provinceEntity);
 
                 //Если число вершин больше максимального в списке
                 if (verticesCount > HexasphereRenderData.maxVertexArraySize)
@@ -875,9 +894,9 @@ namespace HS.Hexasphere.Render
                 Vector2 uVExtruded = new(provinceCount, pR.ProvinceHeight);
 
                 //Определяем положение данных провинции в чанках
-                pHS.parentThickEdgesChunkIndex = chunkIndex;
-                pHS.parentThickEdgesChunkStart = verticesCount;
-                pHS.parentThickEdgesChunkLength = 0;
+                pHSR.parentThickEdgesChunkIndex = chunkIndex;
+                pHSR.parentThickEdgesChunkStart = verticesCount;
+                pHSR.parentThickEdgesChunkLength = 0;
 
                 //Определяем цвет провинции
                 Color32 provinceColor = Color.white;
@@ -893,7 +912,7 @@ namespace HS.Hexasphere.Render
                 for (int a = 0; a < pHS.vertexPoints.Length; a++)
                 {
                     //Определяем, видима ли грань
-                    bool segmentVisible = (pHS.thickEdges & (1 << a)) != 0;
+                    bool segmentVisible = (pHSR.thickEdges & (1 << a)) != 0;
 
                     //Если грань видима или вершина необходима
                     if (segmentVisible || vertexRequired)
@@ -928,7 +947,7 @@ namespace HS.Hexasphere.Render
                         verticesCount++;
 
                         //Увеличиваем длину данных провинции в чанке
-                        pHS.parentThickEdgesChunkLength++;
+                        pHSR.parentThickEdgesChunkLength++;
                     }
 
                     //Заменяем необходимость вершины на видимость грани
@@ -1018,16 +1037,17 @@ namespace HS.Hexasphere.Render
 
         void ProvinceHeightsUpdate()
         {
-            //Для каждой провинции
-            foreach (int provinceEntity in pRFilter.Value)
+            //Для каждой отображаемой провинции
+            foreach (int provinceEntity in pHSRFilter.Value)
             {
                 //Берём компоненты провинции
                 ref C_ProvinceRender pR = ref pRPool.Value.Get(provinceEntity);
                 ref C_ProvinceHexasphere pHS = ref pHSPool.Value.Get(provinceEntity);
+                ref C_ProvinceHexasphereRender pHSR = ref pHSRPool.Value.Get(provinceEntity);
 
                 #region ProvinceMesh
                 //Берём массив чанка, в котором располагается провинция
-                ref Vector4[] chunkUV = ref hexasphereRenderData.Value.chunksUV[pHS.parentChunkIndex];
+                ref Vector4[] chunkUV = ref hexasphereRenderData.Value.chunksUV[pHSR.parentChunkIndex];
 
                 //Определяем, какой массив UV использует провинция
                 Vector2[] uVArray;
@@ -1056,41 +1076,41 @@ namespace HS.Hexasphere.Render
                     uV4.w = pR.ProvinceHeight;
 
                     //Заносим координаты в массив координат
-                    chunkUV[pHS.parentChunkStart + a] = uV4;
+                    chunkUV[pHSR.parentChunkStart + a] = uV4;
                 }
                 #endregion
 
                 #region EdgesMesh
                 //Берём список чанка тонких граней, в котором располагается провинция
-                List<Vector2> thinEdgesChunkUVs = hexasphereRenderData.Value.thinEdgesChunkUVs[pHS.parentThinEdgesChunkIndex];
+                List<Vector2> thinEdgesChunkUVs = hexasphereRenderData.Value.thinEdgesChunkUVs[pHSR.parentThinEdgesChunkIndex];
 
                 //Для каждой вершины провинции в чанке тонких граней
-                for(int a = 0; a < pHS.parentThinEdgesChunkLength; a++)
+                for(int a = 0; a < pHSR.parentThinEdgesChunkLength; a++)
                 {
                     //Берём UV2-координаты вершины
-                    Vector2 uv = thinEdgesChunkUVs[pHS.parentThinEdgesChunkStart + a];
+                    Vector2 uv = thinEdgesChunkUVs[pHSR.parentThinEdgesChunkStart + a];
 
                     //Обновляем высоту провинции
                     uv.y = pR.ProvinceHeight;
 
                     //Заносим координаты в список
-                    thinEdgesChunkUVs[pHS.parentThinEdgesChunkStart + a] = uv;
+                    thinEdgesChunkUVs[pHSR.parentThinEdgesChunkStart + a] = uv;
                 }
 
                 //Берём список чанка толстых граней, в котором располагается провинция
-                List<Vector2> thickEdgesChunkUVs = hexasphereRenderData.Value.thickEdgesChunkUVs[pHS.parentThickEdgesChunkIndex];
+                List<Vector2> thickEdgesChunkUVs = hexasphereRenderData.Value.thickEdgesChunkUVs[pHSR.parentThickEdgesChunkIndex];
 
                 //Для каждой вершины провинции в чанке тонких граней
-                for (int a = 0; a < pHS.parentThickEdgesChunkLength; a++)
+                for (int a = 0; a < pHSR.parentThickEdgesChunkLength; a++)
                 {
                     //Берём UV2-координаты вершины
-                    Vector2 uv = thickEdgesChunkUVs[pHS.parentThickEdgesChunkStart + a];
+                    Vector2 uv = thickEdgesChunkUVs[pHSR.parentThickEdgesChunkStart + a];
 
                     //Обновляем высоту провинции
                     uv.y = pR.ProvinceHeight;
 
                     //Заносим координаты в список
-                    thickEdgesChunkUVs[pHS.parentThickEdgesChunkStart + a] = uv;
+                    thickEdgesChunkUVs[pHSR.parentThickEdgesChunkStart + a] = uv;
                 }
                 #endregion
             }
@@ -1135,15 +1155,16 @@ namespace HS.Hexasphere.Render
         void ProvinceColorsUpdate(
             ref C_MapModeCore mapMode)
         {
-            //Для каждой провинции
-            foreach (int provinceEntity in pRFilter.Value)
+            //Для каждой отображаемой провинции
+            foreach (int provinceEntity in pHSRFilter.Value)
             {
                 //Берём компоненты провинции
                 ref C_ProvinceRender pR = ref pRPool.Value.Get(provinceEntity);
                 ref C_ProvinceHexasphere pHS = ref pHSPool.Value.Get(provinceEntity);
+                ref C_ProvinceHexasphereRender pHSR = ref pHSRPool.Value.Get(provinceEntity);
 
                 //Берём массивы чанка, в котором располагается провинция
-                ref Color32[] chunkColors = ref hexasphereRenderData.Value.chunksColors[pHS.parentChunkIndex];
+                ref Color32[] chunkColors = ref hexasphereRenderData.Value.chunksColors[pHSR.parentChunkIndex];
 
                 //Определяем количество вершин провинции
                 int provinceVertexCount = pHS.vertexPoints.Length + 2;
@@ -1152,7 +1173,7 @@ namespace HS.Hexasphere.Render
                 for (int a = 0; a < provinceVertexCount; a++)
                 {
                     //Заносим цвет в массив цветов
-                    chunkColors[pHS.parentChunkStart + a] = mapMode.GetProvinceColor(ref pR);
+                    chunkColors[pHSR.parentChunkStart + a] = mapMode.GetProvinceColor(ref pR);
                 }
             }
 
@@ -1593,10 +1614,8 @@ namespace HS.Hexasphere.Render
             int provinceEntity,
             ref C_ProvinceRender pR, ref C_ProvinceHexasphere pHS)
         {
-            //Назначаем сущности провинции компонент панелей карты
+            //Назначаем сущности провинции компонент панелей карты и заполняем его данные
             ref C_ProvinceMapPanels pMP = ref pMPPool.Value.Add(provinceEntity);
-
-            //Заполняем данные компонента
             pMP = new(0);
 
             //Определяем центр провинции
@@ -1680,8 +1699,8 @@ namespace HS.Hexasphere.Render
 
         void ProvinceGOEmptyCheck()
         {
-            //Для каждой провинции с PR
-            foreach (int provinceEntity in pRFilter.Value)
+            //Для каждой отображаемой провинции
+            foreach (int provinceEntity in pHSFilter.Value)
             {
                 //Берём PR
                 ref C_ProvinceRender pR = ref pRPool.Value.Get(provinceEntity);

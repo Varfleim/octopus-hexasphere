@@ -370,21 +370,12 @@ namespace HS.Hexasphere
                     tempNeighbourEntities.Add(newProvinceEntity);
                 }
 
-                //Создаём временный список PE и заносим в него PE соседей
-                List<EcsPackedEntity> tempNeighbourPEs = ListPool<EcsPackedEntity>.Get();
-                for(int a = 0; a < tempNeighbourEntities.Count; a++)
-                {
-                    tempNeighbourPEs.Add(world.Value.PackEntity(tempNeighbourEntities[a]));
-                }
-
                 //Запрашиваем создание PC по PHS
                 MapData.ProvinceCoreCreationRequest(
                     pCCreationSRPool.Value,
                     provinceEntity,
                     mapEntity,
                     tempNeighbourEntities);
-
-                ListPool<EcsPackedEntity>.Add(tempNeighbourPEs);
             }
 
             //Возвращаем список в пул
