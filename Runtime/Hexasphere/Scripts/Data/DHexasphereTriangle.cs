@@ -1,4 +1,4 @@
-namespace HS
+namespace HS.Hexasphere
 {
     public class DHexasphereTriangle
     {

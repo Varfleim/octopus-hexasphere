@@ -1,25 +1,113 @@
 
 using UnityEngine;
 
-namespace HS
+namespace HS.Hexasphere
 {
-    internal class HexasphereCameraData : MonoBehaviour
+    public class HexasphereCameraData : MonoBehaviour
     {
-        public Transform hexasphereCamera;
-        public Transform swiwel;
-        public Transform stick;
-        public UnityEngine.Camera camera;
+        public Transform HeasphereCamera
+        {
+            get
+            {
+                return hexasphereCamera;
+            }
+        }
+        [SerializeField]
+        private Transform hexasphereCamera;
+        public Transform Swiwel
+        {
+            get
+            {
+                return swiwel;
+            }
+        }
+        [SerializeField]
+        private Transform swiwel;
+        public Transform Stick
+        {
+            get
+            {
+                return stick;
+            }
+        }
+        [SerializeField]
+        private Transform stick;
+        public Camera Camera
+        {
+            get
+            {
+                return camera;
+            }
+        }
+        [SerializeField]
+        private Camera camera;
 
-        public float rotationSpeed;
-        public float rotationAngleY;
-        public float rotationAngleX;
-        public float minAngleX;
-        public float maxAngleX;
+        public float RotationSpeed
+        {
+            get
+            {
+                return rotationSpeed;
+            }
+        }
+        [SerializeField]
+        private float rotationSpeed;
+        public float MinAngleX
+        {
+            get
+            {
+                return minAngleX;
+            }
+        }
+        [SerializeField]
+        private float minAngleX;
+        public float MaxAngleX
+        {
+            get
+            {
+                return maxAngleX;
+            }
+        }
+        [SerializeField]
+        private float maxAngleX;
+        internal float rotationAngleX;
+        internal float rotationAngleY;
 
-        public float zoom;
-        public float stickMinZoom;
-        public float stickMaxZoom;
-        public float swiwelMinZoom;
-        public float swiwelMaxZoom;
+        public float StickMinZoom
+        {
+            get
+            {
+                return stickMinZoom;
+            }
+        }
+        [SerializeField]
+        private float stickMinZoom;
+        public float StickMaxZoom
+        {
+            get
+            {
+                return stickMaxZoom;
+            }
+        }
+        [SerializeField]
+        private float stickMaxZoom;
+        public float SwiwelMinZoom
+        {
+            get
+            {
+                return swiwelMinZoom;
+            }
+        }
+        [SerializeField]
+        private float swiwelMinZoom;
+        public float SwiwelMaxZoom
+        {
+            get
+            {
+                return swiwelMaxZoom;
+            }
+        }
+        [SerializeField]
+        private float swiwelMaxZoom;
+        internal float zoom;
     }
 }

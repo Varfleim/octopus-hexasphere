@@ -1,5 +1,5 @@
 
-namespace HS.Pathfinding
+namespace HS.Hexasphere.Pathfinding
 {
     public struct DPathfindingClosedNode
     {

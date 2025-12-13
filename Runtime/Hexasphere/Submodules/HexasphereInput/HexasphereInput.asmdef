@@ -1,13 +1,16 @@
 {
     "name": "HexasphereInput",
-    "rootNamespace": "HS.Input",
+    "rootNamespace": "HS.Hexasphere.Input",
     "references": [
         "GUID:e59bf9fc7d5a44b18a819a92edd46163",
         "GUID:f5f01a091e0d746659b4380253d52f4e",
-        "GUID:aa3daa4c9113b5247acaf9f2d9948b45",
-        "GUID:70096a8c0b2c4de49b9f3094a3de8df1",
-        "GUID:1dbcccfe85f598846b758d8f67b35464",
-        "GUID:6e905975b8614854a968628b78f44584"
+        "GUID:b32bc0920a31b724eb24db2bba81b9ae",
+        "GUID:e00697c326bd3c94ebab5b89eafd37cc",
+        "GUID:6880d41dce9017b46bf138a8c23acd66",
+        "GUID:815c0220cd4ec5f4ba119731cf2b17a6",
+        "GUID:ac96d8313035454449326161efa8f4f8",
+        "GUID:ca1f3ff6b73eaf74bb8fd80a538f2da6",
+        "GUID:5fb295e63c431794d88cddb2670972a5"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

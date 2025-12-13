@@ -6,7 +6,7 @@ using UnityEngine;
 
 using Leopotam.EcsLite;
 
-namespace HS
+namespace HS.Hexasphere
 {
     public class DHexaspherePoint : IEqualityComparer<DHexaspherePoint>, IEquatable<DHexaspherePoint>
     {
@@ -63,7 +63,7 @@ namespace HS
 
         public DHexasphereTriangle[] triangles;
         public int triangleCount;
-        public EcsPackedEntity provincePE;
+        public int provinceEntity;
 
         public static int flag = 0;
 

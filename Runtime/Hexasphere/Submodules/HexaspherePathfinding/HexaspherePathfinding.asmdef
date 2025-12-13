@@ -1,11 +1,12 @@
 {
     "name": "HexaspherePathfinding",
-    "rootNamespace": "HS.Pathfinding",
+    "rootNamespace": "HS.Hexasphere.Pathfinding",
     "references": [
         "GUID:e59bf9fc7d5a44b18a819a92edd46163",
-        "GUID:aa3daa4c9113b5247acaf9f2d9948b45",
-        "GUID:1dbcccfe85f598846b758d8f67b35464",
-        "GUID:6e905975b8614854a968628b78f44584"
+        "GUID:b32bc0920a31b724eb24db2bba81b9ae",
+        "GUID:e00697c326bd3c94ebab5b89eafd37cc",
+        "GUID:ac96d8313035454449326161efa8f4f8",
+        "GUID:ca1f3ff6b73eaf74bb8fd80a538f2da6"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 
-namespace HS.Pathfinding
+namespace HS.Hexasphere.Pathfinding
 {
     public class DModulePathfinding
     {

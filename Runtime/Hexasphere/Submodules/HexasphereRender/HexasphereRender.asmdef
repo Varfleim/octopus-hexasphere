@@ -1,0 +1,24 @@
+{
+    "name": "HexasphereRender",
+    "rootNamespace": "HS.Hexasphere.Render",
+    "references": [
+        "GUID:e59bf9fc7d5a44b18a819a92edd46163",
+        "GUID:f5f01a091e0d746659b4380253d52f4e",
+        "GUID:a758ff47af0484038b71625d05877e22",
+        "GUID:b32bc0920a31b724eb24db2bba81b9ae",
+        "GUID:e00697c326bd3c94ebab5b89eafd37cc",
+        "GUID:6880d41dce9017b46bf138a8c23acd66",
+        "GUID:815c0220cd4ec5f4ba119731cf2b17a6",
+        "GUID:ac96d8313035454449326161efa8f4f8",
+        "GUID:ca1f3ff6b73eaf74bb8fd80a538f2da6"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

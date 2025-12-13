@@ -3,9 +3,9 @@ using UnityEngine;
 
 using Leopotam.EcsLite;
 
-namespace HS.Input
+namespace HS.Hexasphere.Input
 {
-    internal class HexasphereInputData : MonoBehaviour
+    public class HexasphereInputData : MonoBehaviour
     {
         public bool isMouseOverMap;
         public EcsPackedEntity lastHitProvincePE;

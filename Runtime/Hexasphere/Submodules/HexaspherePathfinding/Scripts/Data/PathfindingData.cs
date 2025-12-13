@@ -8,15 +8,15 @@ using Leopotam.EcsLite;
 
 using GBB;
 
-namespace HS.Pathfinding
+namespace HS.Hexasphere.Pathfinding
 {
     public class PathfindingData : MonoBehaviour
     {
         public static List<int> GetCellIndicesWithinSteps(
             EcsWorld world,
-            ref CMapPathfinding mapPF, int modulePathfindingIndex,
-            EcsPool<CCellPathfinding> cPFPool, ref EcsPackedEntity[] cellPEs,
-            ref CCellPathfinding startCell,
+            ref C_MapPathfinding mapPF, int modulePathfindingIndex,
+            EcsPool<C_CellPathfinding> cPFPool, ref EcsPackedEntity[] cellPEs,
+            ref C_CellPathfinding startCell,
             int maxSteps)
         {
             //Создаём список кандидатов
@@ -27,7 +27,7 @@ namespace HS.Pathfinding
             {
                 //Берём соседа
                 startCell.neighbourCellPEs[a].Unpack(world, out int neighbourCellEntity);
-                ref CCellPathfinding neighbourCell = ref cPFPool.Get(neighbourCellEntity);
+                ref C_CellPathfinding neighbourCell = ref cPFPool.Get(neighbourCellEntity);
 
                 //Заносим его индекс в список кандидатов
                 candidates.Add(neighbourCell.index);
@@ -52,7 +52,7 @@ namespace HS.Pathfinding
                 candidates.RemoveAt(candidatesLast);
                 candidatesLast--;
                 cellPEs[candidateIndex].Unpack(world, out int candidateCellEntity);
-                ref CCellPathfinding candidateCell = ref cPFPool.Get(candidateCellEntity);
+                ref C_CellPathfinding candidateCell = ref cPFPool.Get(candidateCellEntity);
 
                 //Если словарь ещё не содержит его
                 if(processed.Contains(candidateIndex) == false)
@@ -77,7 +77,7 @@ namespace HS.Pathfinding
                         {
                             //Берём соседа
                             candidateCell.neighbourCellPEs[a].Unpack(world, out int neighbourCellEntity);
-                            ref CCellPathfinding neighbourCell = ref cPFPool.Get(neighbourCellEntity);
+                            ref C_CellPathfinding neighbourCell = ref cPFPool.Get(neighbourCellEntity);
 
                             //Если хэшсет не содержит его
                             if(processed.Contains(neighbourCell.index) == false)
@@ -102,9 +102,9 @@ namespace HS.Pathfinding
 
         public static List<int> GetCellIndicesWithinSteps(
             EcsWorld world,
-            ref CMapPathfinding mapPF, int modulePathfindingIndex,
-            EcsPool<CCellPathfinding> cPFPool, ref EcsPackedEntity[] cellPEs,
-            ref CCellPathfinding startCell,
+            ref C_MapPathfinding mapPF, int modulePathfindingIndex,
+            EcsPool<C_CellPathfinding> cPFPool, ref EcsPackedEntity[] cellPEs,
+            ref C_CellPathfinding startCell,
             int minSteps, int maxSteps)
         {
             //Создаём промежуточный список
@@ -115,7 +115,7 @@ namespace HS.Pathfinding
             {
                 //Берём соседа
                 startCell.neighbourCellPEs[a].Unpack(world, out int neighbourCellEntity);
-                ref CCellPathfinding neighbourCell = ref cPFPool.Get(neighbourCellEntity);
+                ref C_CellPathfinding neighbourCell = ref cPFPool.Get(neighbourCellEntity);
 
                 //Заносим индекс соседа в список кандидатов
                 candidates.Add(neighbourCell.index);
@@ -140,7 +140,7 @@ namespace HS.Pathfinding
                 candidates.RemoveAt(candidatesLast);
                 candidatesLast--;
                 cellPEs[candidateIndex].Unpack(world, out int candidateCellEntity);
-                ref CCellPathfinding candidateCell = ref cPFPool.Get(candidateCellEntity);
+                ref C_CellPathfinding candidateCell = ref cPFPool.Get(candidateCellEntity);
 
                 //Если хэшсет ещё не содержит его
                 if (processed.Contains(candidateIndex) == false)
@@ -171,7 +171,7 @@ namespace HS.Pathfinding
                         {
                             //Берём соседа
                             candidateCell.neighbourCellPEs[a].Unpack(world, out int neighbourCellEntity);
-                            ref CCellPathfinding neighbourCell = ref cPFPool.Get(neighbourCellEntity);
+                            ref C_CellPathfinding neighbourCell = ref cPFPool.Get(neighbourCellEntity);
 
                             //Если хэшсет не содержит его
                             if (processed.Contains(neighbourCell.index) == false)
@@ -196,9 +196,9 @@ namespace HS.Pathfinding
 
         public static List<int> PathFind(
             EcsWorld world,
-            ref CMapPathfinding mapPF, int modulePathfindingIndex,
-            EcsPool<CCellPathfinding> cPFPool, ref EcsPackedEntity[] cellPEs,
-            ref CCellPathfinding startCell, ref CCellPathfinding endCell,
+            ref C_MapPathfinding mapPF, int modulePathfindingIndex,
+            EcsPool<C_CellPathfinding> cPFPool, ref EcsPackedEntity[] cellPEs,
+            ref C_CellPathfinding startCell, ref C_CellPathfinding endCell,
             int maxSteps = 0)
         {
             //Создаём список для индексов ячеек пути
@@ -220,8 +220,8 @@ namespace HS.Pathfinding
         public static List<int> PathFind(
             EcsWorld world,
             DModulePathfinding moduleData,
-            EcsPool<CCellPathfinding> cPFPool, ref EcsPackedEntity[] cellPEs,
-            ref CCellPathfinding startCell, ref CCellPathfinding endCell,
+            EcsPool<C_CellPathfinding> cPFPool, ref EcsPackedEntity[] cellPEs,
+            ref C_CellPathfinding startCell, ref C_CellPathfinding endCell,
             int maxSteps = 0)
         {
             //Создаём список для индексов ячеек пути
@@ -243,8 +243,8 @@ namespace HS.Pathfinding
         static int PathFind(
             EcsWorld world,
             DModulePathfinding moduleData,
-            EcsPool<CCellPathfinding> cellPathfindingPool, ref EcsPackedEntity[] cellPEs,
-            ref CCellPathfinding startCell, ref CCellPathfinding endCell,
+            EcsPool<C_CellPathfinding> cellPathfindingPool, ref EcsPackedEntity[] cellPEs,
+            ref C_CellPathfinding startCell, ref C_CellPathfinding endCell,
             List<int> results,
             int maxSteps = 0)
         {
@@ -333,8 +333,8 @@ namespace HS.Pathfinding
         static List<DPathfindingClosedNode> PathFindFast(
             EcsWorld world,
             DModulePathfinding moduleData,
-            EcsPool<CCellPathfinding> cellPathfindingPool, ref EcsPackedEntity[] cellPEs,
-            ref CCellPathfinding startCell, ref CCellPathfinding endCell)
+            EcsPool<C_CellPathfinding> cellPathfindingPool, ref EcsPackedEntity[] cellPEs,
+            ref C_CellPathfinding startCell, ref C_CellPathfinding endCell)
         {
             //Создаём переменную для проверки нахождения пути
             bool isPathFound = false;
@@ -402,14 +402,14 @@ namespace HS.Pathfinding
 
                 //Берём текущую ячейку
                 cellPEs[currentCellIndex].Unpack(world, out int currentCellEntity);
-                ref CCellPathfinding currentCell = ref cellPathfindingPool.Get(currentCellEntity);
+                ref C_CellPathfinding currentCell = ref cellPathfindingPool.Get(currentCellEntity);
 
                 //Для каждого соседа текущей ячейки
                 for (int a = 0; a < currentCell.neighbourCellPEs.Length; a++)
                 {
                     //Берём соседа
                     currentCell.neighbourCellPEs[a].Unpack(world, out int neighbourCellEntity);
-                    ref CCellPathfinding neighbourCell = ref cellPathfindingPool.Get(neighbourCellEntity);
+                    ref C_CellPathfinding neighbourCell = ref cellPathfindingPool.Get(neighbourCellEntity);
 
                     //Рассчитываем расстояние до соседа
                     float newDistance = moduleData.pfCalc[currentCellIndex].distance + neighbourCell.crossCost;
