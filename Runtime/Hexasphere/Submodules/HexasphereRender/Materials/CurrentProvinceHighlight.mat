@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CurrentProvinceHighlight
-  m_Shader: {fileID: 4800000, guid: db2da2a3650a9384e93cb63d27a911ad, type: 3}
+  m_Shader: {fileID: 4800000, guid: bea9fadd5d88d4046910b4c929f0da2c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -62,7 +62,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _BumpScale: 1
-    - _ColorShift: 1
+    - _ColorShift: 0.55837524
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
