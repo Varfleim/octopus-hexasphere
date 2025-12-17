@@ -214,6 +214,7 @@ MonoBehaviour:
   - {r: 0, g: 1, b: 0, a: 1}
   - {r: 0, g: 0, b: 1, a: 1}
   defaultMapModeDefaultColor: {r: 0.56078434, g: 0.7058824, b: 0.5411765, a: 1}
+  defaultMapModeDefaultState: 1
 --- !u!1 &5365404742713736896
 GameObject:
   m_ObjectHideFlags: 0

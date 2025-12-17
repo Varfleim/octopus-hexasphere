@@ -36,6 +36,15 @@ namespace HS.Hexasphere.Render
         }
         [SerializeField]
         private Color defaultMapModeDefaultColor;
+        public bool DefaultMapModeDefaultState
+        {
+            get
+            {
+                return defaultMapModeDefaultState;
+            }
+        }
+        [SerializeField]
+        private bool defaultMapModeDefaultState;
 
         public EcsPackedEntity DefaultMapModePE
         {

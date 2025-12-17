@@ -35,7 +35,7 @@ namespace HS.Hexasphere.Render
             MainMapModeData.MapModeCreationRequest(
                 mapModeCreationSRPool.Value,
                 mapModeEntity, mapModeData.Value.DefaultMapModeName,
-                false);
+                mapModeData.Value.DefaultMapModeDefaultState);
 
             //Запрашиваем вторичное обновление списка цветов режима карты
             MainMapModeData.MapModeUpdateColorsListSecondRequest(
