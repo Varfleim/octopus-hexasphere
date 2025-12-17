@@ -182,12 +182,19 @@ MonoBehaviour:
   minimumLight: 0.1
   hoverProvinceHighlightMaterial: {fileID: 2100000, guid: 41388792af8c03b4892ddfad7cb16008, type: 2}
   currentProvinceHighlightMaterial: {fileID: 2100000, guid: a52702e57f75c1d4e81b8dc448cef043, type: 2}
+  chunksRootGOName: ChunksRoot
+  chunkGOName: Chunk
+  provincesRootGOName: ProvincesRoot
   thinEdgesMaterial: {fileID: 2100000, guid: b7fb967795070e342994b84b8ca26078, type: 2}
   thinEdgesColor: {r: 1, g: 1, b: 1, a: 1}
   thinEdgesColorIntensity: 0.75
+  thinEdgesRootGOName: ThinEdgesRoot
+  thinEdgeChunkGOName: ThinEdgesChunk
   thickEdgesMaterial: {fileID: 2100000, guid: fd889f945df737144ae7dd234397f12c, type: 2}
   thickEdgesColor: {r: 0, g: 0, b: 0, a: 1}
   thickEdgesColorIntensity: 1
+  thickEdgesRootGOName: ThickEdgesRoot
+  thickEdgeChunkGOName: ThickEdgesChunk
 --- !u!114 &5273667275880502981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,20 +335,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 214d428984d23d944a5f63d6414ac76a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  provinceMaterial: {fileID: 2100000, guid: 30f916561242a054c8e2cf8032f31eba, type: 2}
-  provinceColoredMaterial: {fileID: 2100000, guid: 84356e452f86d2846acfca03f9edcebe, type: 2}
-  gradientIntensity: 0.25
-  tileTintColor: {r: 1, g: 1, b: 1, a: 1}
-  ambientColor: {r: 0, g: 0, b: 0, a: 1}
-  minimumLight: 0.1
-  hoverProvinceHighlightMaterial: {fileID: 2100000, guid: 41388792af8c03b4892ddfad7cb16008, type: 2}
-  currentProvinceHighlightMaterial: {fileID: 2100000, guid: a52702e57f75c1d4e81b8dc448cef043, type: 2}
-  thinEdgesMaterial: {fileID: 2100000, guid: b7fb967795070e342994b84b8ca26078, type: 2}
-  thinEdgesColor: {r: 1, g: 1, b: 1, a: 1}
-  thinEdgesColorIntensity: 0.75
-  thickEdgesMaterial: {fileID: 2100000, guid: fd889f945df737144ae7dd234397f12c, type: 2}
-  thickEdgesColor: {r: 0, g: 0, b: 0, a: 1}
-  thickEdgesColorIntensity: 1
 --- !u!114 &2291334145290639225
 MonoBehaviour:
   m_ObjectHideFlags: 0

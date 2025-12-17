@@ -34,15 +34,18 @@ namespace HS.Hexasphere.Input
         readonly EcsPoolInject<C_Map> mapPool = default;
         void MapsInputCheck()
         {
-            //Берём активную карту
-            mapRenderData.Value.ActiveMapPE.Unpack(world.Value, out int activeMapEntity);
-            ref C_Map activeMap = ref mapPool.Value.Get(activeMapEntity);
+            //Если активная карта не пуста
+            if(mapRenderData.Value.ActiveMapPE.Unpack(world.Value, out int activeMapEntity))
+            {
+                //Берём активную карту
+                ref C_Map activeMap = ref mapPool.Value.Get(activeMapEntity);
 
-            //Проверяем положение курсора
-            MousePositionCheck(ref activeMap);
+                //Проверяем положение курсора
+                MousePositionCheck(ref activeMap);
 
-            //Сообщаем модулю ввода о положении курсора
-            MousePositionRequest();
+                //Сообщаем модулю ввода о положении курсора
+                MousePositionRequest();
+            }
         }
 
         void MousePositionCheck(
