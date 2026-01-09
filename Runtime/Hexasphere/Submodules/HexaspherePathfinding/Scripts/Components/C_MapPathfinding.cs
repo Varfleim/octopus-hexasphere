@@ -3,6 +3,6 @@ namespace HS.Hexasphere.Pathfinding
 {
     public struct C_MapPathfinding
     {
-        public DModulePathfinding[] modulesPathfindingData;
+        public D_ModulePathfinding[] modulesPathfindingData;
     }
 }

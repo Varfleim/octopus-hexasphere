@@ -6,12 +6,12 @@ namespace HS.Hexasphere.Pathfinding
     public class PathfindingNodesComparer : IComparer<int>
     {
         public PathfindingNodesComparer(
-            DPathfindingNodeFast[] cells)
+            D_PathfindingNodeFast[] cells)
         {
             this.cells = cells;
         }
 
-        DPathfindingNodeFast[] cells;
+        D_PathfindingNodeFast[] cells;
 
         public int Compare(
             int a, int b)
@@ -28,7 +28,7 @@ namespace HS.Hexasphere.Pathfinding
         }
 
         public void SetMatrix(
-            DPathfindingNodeFast[] cells)
+            D_PathfindingNodeFast[] cells)
         {
             this.cells = cells;
         }

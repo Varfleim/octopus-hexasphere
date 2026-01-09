@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee4f6237ca94a374d9389167c1cf2d9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hexasphereInputData: {fileID: 8898254233401985754}
+  hexasphereInput_Data: {fileID: 8898254233401985754}
 --- !u!114 &8898254233401985754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,7 +105,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1282165702865375861}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd4eb63195ceb1241afd15586e6844f6, type: 3}
+  m_Script: {fileID: 11500000, guid: f1e2706a86c38d94a8440193332500a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isMouseOverMap: 0
@@ -155,8 +155,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d5b7ef6a34264340b5f51f6f14ad42a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hexasphereRenderData: {fileID: 4123002001898975397}
-  mapModeData: {fileID: 5273667275880502981}
+  hexasphereRender_Data: {fileID: 4123002001898975397}
+  mapMode_Data: {fileID: 5273667275880502981}
 --- !u!114 &4123002001898975397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,16 +204,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4145241386235370433}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5437191b9f4a5c743a5120f5a4c657aa, type: 3}
+  m_Script: {fileID: 11500000, guid: b0bb7a3bebef4d74899bc495656c62d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   defaultMapModeName: HexasphereDefaultMapMode
   defaultMapModeColors:
-  - {r: 0.560784, g: 0.705882, b: 0.541176, a: 1}
+  - {r: 0.56078434, g: 0.70980394, b: 0.5411765, a: 1}
   - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}
   - {r: 0, g: 0, b: 1, a: 1}
-  defaultMapModeDefaultColor: {r: 0.56078434, g: 0.7058824, b: 0.5411765, a: 1}
+  defaultMapModeDefaultColor: {r: 0.56078434, g: 0.70980394, b: 0.5411765, a: 1}
   defaultMapModeDefaultState: 1
 --- !u!1 &5365404742713736896
 GameObject:
@@ -260,7 +260,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d204e09d46737194bb80dda7bf932596, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathfindingData: {fileID: 6592459921240244501}
+  pathfinding_Data: {fileID: 6592459921240244501}
 --- !u!114 &6592459921240244501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,7 +270,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5365404742713736896}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a750d4bf925184f43852dd6f19eaac17, type: 3}
+  m_Script: {fileID: 11500000, guid: bf4d1b3da39229445886951386786521, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8894843042644259113
@@ -322,8 +322,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7be23fe42958395429d1afaaeec3aa05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hexasphereData: {fileID: 5146154523222866201}
-  hexasphereCameraData: {fileID: 2291334145290639225}
+  hexasphere_Data: {fileID: 5146154523222866201}
+  hexasphereCamera_Data: {fileID: 2291334145290639225}
 --- !u!114 &5146154523222866201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -345,7 +345,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8894843042644259113}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbb44667257edf2479b262109c5da864, type: 3}
+  m_Script: {fileID: 11500000, guid: e25d34d52a8d0404a8ad800a2f2943d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   hexasphereCamera: {fileID: 0}

@@ -12,14 +12,14 @@ namespace HS.Hexasphere
     {
         public C_ProvinceHexasphere(
             int selfEntity,
-            DHexaspherePoint centerPoint)
+            D_HexaspherePoint centerPoint)
         {
             this.centerPoint = centerPoint;
             center = this.centerPoint.ProjectedVector3;
             this.centerPoint.provinceEntity = selfEntity;
 
             int facesCount = centerPoint.GetOrderedTriangles(tempTriangles);
-            vertexPoints = new DHexaspherePoint[facesCount];
+            vertexPoints = new D_HexaspherePoint[facesCount];
             //Для каждой вершины
             for (int a = 0; a < facesCount; a++)
             {
@@ -37,7 +37,7 @@ namespace HS.Hexasphere
                 float dp = Vector3.Dot(cp, p1);
                 if (dp < 0)
                 {
-                    DHexaspherePoint aux;
+                    D_HexaspherePoint aux;
                     aux = vertexPoints[0];
                     vertexPoints[0] = vertexPoints[5];
                     vertexPoints[5] = aux;
@@ -60,7 +60,7 @@ namespace HS.Hexasphere
                 float dp = Vector3.Dot(cp, p1);
                 if (dp < 0)
                 {
-                    DHexaspherePoint aux;
+                    D_HexaspherePoint aux;
                     aux = vertexPoints[0];
                     vertexPoints[0] = vertexPoints[4];
                     vertexPoints[4] = aux;
@@ -78,11 +78,11 @@ namespace HS.Hexasphere
             }
         }
 
-        static readonly DHexasphereTriangle[] tempTriangles = new DHexasphereTriangle[20];
+        static readonly D_HexasphereTriangle[] tempTriangles = new D_HexasphereTriangle[20];
 
-        public DHexaspherePoint centerPoint;
+        public D_HexaspherePoint centerPoint;
         public Vector3 center;
-        public DHexaspherePoint[] vertexPoints;
+        public D_HexaspherePoint[] vertexPoints;
         public Vector3[] vertices;
     }
 }
